@@ -1,1 +1,2 @@
-const foo = () => {return 0};
+const foo = () => 0;
+const user = {};

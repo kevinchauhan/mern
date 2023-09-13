@@ -9,7 +9,8 @@
         "format:fix": "npm run format -- --write",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "husky install"
     },
     "author": "Kevin Chauhan",
     "license": "ISC",
@@ -19,6 +20,7 @@
         "@typescript-eslint/parser": "^6.7.0",
         "eslint": "^8.49.0",
         "eslint-config-prettier": "^9.0.0",
+        "husky": "^8.0.3",
         "nodemon": "^3.0.1",
         "prettier": "^3.0.3",
         "ts-node": "^10.9.1",
