@@ -1,8 +1,8 @@
-import { config } from 'dotenv';
-config();
+import { config } from 'dotenv'
+config()
 
-const { PORT } = process.env;
+const { PORT } = process.env
 
 export const CONFIG = {
     PORT,
-};
+}
