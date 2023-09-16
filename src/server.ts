@@ -1,6 +1,6 @@
-import { CONFIG } from './src/config'
-import app from './src/app'
-import logger from './src/config/logger'
+import { CONFIG } from './config'
+import app from './app'
+import logger from './config/logger'
 
 const PORT = CONFIG.PORT || 8000
 
