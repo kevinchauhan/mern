@@ -1,4 +1,5 @@
 import winston from 'winston'
+import { CONFIG } from '.'
 
 const logger = winston.createLogger({
     level: 'info',
@@ -10,7 +11,13 @@ const logger = winston.createLogger({
             dirname: 'logs',
             filename: 'app.log',
             level: 'info',
-            silent: false,
+            silent: CONFIG.NODE_ENV === 'test',
+        }),
+        new winston.transports.File({
+            dirname: 'logs',
+            filename: 'error.log',
+            level: 'error',
+            silent: CONFIG.NODE_ENV === 'test',
         }),
         new winston.transports.Console({
             level: 'info',

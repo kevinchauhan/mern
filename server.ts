@@ -11,7 +11,7 @@ const startServer = async (port: number) => {
         })
     } catch (error: unknown) {
         if (error instanceof Error) {
-            logger.error(`something went wrong..`, error)
+            logger.error(`something went wrong..`, error.message)
             setTimeout(() => {
                 process.exit(1)
             }, 1000)
