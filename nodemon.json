@@ -1,0 +1,5 @@
+{
+    "ext": "js,json,ts",
+    "legacyWatch": true,
+    "polling": 1000
+}

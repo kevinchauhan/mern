@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 // Routes
 app.get('/', async (req, res) => {
-    res.send('ok...')
+    res.send('Welcome to Docker...')
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
