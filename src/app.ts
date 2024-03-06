@@ -2,14 +2,19 @@ import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import logger from './config/logger'
 import { HttpError } from 'http-errors'
+import authRouter from './routes/auth'
 
 const app = express()
 app.use(express.json())
 app.use(cors())
+
 // Routes
 app.get('/', async (req, res) => {
     res.send('Welcome to Docker...')
 })
+
+// Auth Route 
+app.use('/auth', authRouter)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
@@ -26,4 +31,5 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
         ],
     })
 })
+
 export default app

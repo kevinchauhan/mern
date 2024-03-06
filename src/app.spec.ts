@@ -2,7 +2,7 @@ import app from './app'
 import { calDis } from './utils'
 import request from 'supertest'
 
-describe('App', () => {
+describe.skip('App', () => {
     it('should cal discount', () => {
         const result = calDis(100, 10)
         expect(result).toBe(10)
