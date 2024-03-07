@@ -100,6 +100,21 @@ describe('POST /auth/register', () => {
             expect(users[0].password).toHaveLength(60)
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/)
         })
+        it('should return 400 status code if email already exists', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '123',
+                role: Roles.CUSTOMER
+            }
+            const userRepository = connection.getRepository(User)
+            await userRepository.save(userData)
+            const response = await request(app).post('/auth/register').send(userData)
+            const users = await userRepository.find()
+            expect(response.statusCode).toBe(400)
+            expect(users).toHaveLength(1)
+        })
     })
 
     // eslint-disable-next-line
