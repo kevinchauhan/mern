@@ -117,15 +117,45 @@ describe('POST /auth/register', () => {
         })
     })
 
-    // eslint-disable-next-line
     describe('fields are missing', () => {
-        it('should return 400 status code if email field is missing', async () => {
+        it('should return 400 status code if any one/all fields are missing', async () => {
+            const userData = {
+                firstName: ' ',
+                lastName: ' ',
+                email: ' ',
+                password: ' ',
+                role: Roles.CUSTOMER
+            }
+            const response = await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(response.statusCode).toBe(400)
+            expect(users).toHaveLength(0)
+        })
+    })
+
+    describe('fields are not in proper format', () => {
+        it('should trim the all fields', async () => {
+            const userData = {
+                firstName: ' Kevin ',
+                lastName: ' Chauhan ',
+                email: ' kevin@gmail.com ',
+                password: '123',
+                role: Roles.CUSTOMER
+            }
+            await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0].firstName).toBe('Kevin')
+            expect(users[0].lastName).toBe('Chauhan')
+            expect(users[0].email).toBe('kevin@gmail.com')
+        })
+        it('should return 400 status code 400 if emial is not a valid email', async () => {
             const userData = {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
-                email: '',
-                password: '123',
-                role: Roles.CUSTOMER
+                email: 'kevingmailcom',
+                password: '123'
             }
             const response = await request(app).post('/auth/register').send(userData)
             const userRepository = connection.getRepository(User)
