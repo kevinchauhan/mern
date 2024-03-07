@@ -86,6 +86,20 @@ describe('POST /auth/register', () => {
             expect(users[0]).toHaveProperty('role')
             expect(users[0].role).toBe(Roles.CUSTOMER)
         })
+        it('should store the hashed password in db', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '123'
+            }
+            await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0].password).not.toBe(userData.password)
+            expect(users[0].password).toHaveLength(60)
+            expect(users[0].password).toMatch(/^\$2b\$\d+\$/)
+        })
     })
 
     // eslint-disable-next-line
