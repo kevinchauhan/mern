@@ -62,7 +62,18 @@ describe('POST /auth/register', () => {
             expect(users[0].lastName).toEqual(userData.lastName)
             expect(users[0].email).toEqual(userData.email)
         })
+        it('should should return the id of created user', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '123'
+            }
+            const response = await request(app).post('/auth/register').send(userData)
+            expect(response.body).toHaveProperty('id')
+        })
     })
+
     // eslint-disable-next-line
     describe('fields are missing', () => { })
 })
