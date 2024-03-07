@@ -31,7 +31,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             // Act
             const response = await request(app).post('/auth/register').send(userData)
@@ -43,7 +43,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             const response = await request(app).post('/auth/register').send(userData)
             expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
@@ -53,7 +53,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             await request(app).post('/auth/register').send(userData)
             const userRepository = connection.getRepository(User)
@@ -68,7 +68,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             const response = await request(app).post('/auth/register').send(userData)
             expect(response.body).toHaveProperty('id')
@@ -78,7 +78,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             await request(app).post('/auth/register').send(userData)
             const userRepository = connection.getRepository(User)
@@ -91,7 +91,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123'
+                password: '12345678'
             }
             await request(app).post('/auth/register').send(userData)
             const userRepository = connection.getRepository(User)
@@ -105,7 +105,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevin@gmail.com',
-                password: '123',
+                password: '12345678',
                 role: Roles.CUSTOMER
             }
             const userRepository = connection.getRepository(User)
@@ -140,7 +140,7 @@ describe('POST /auth/register', () => {
                 firstName: ' Kevin ',
                 lastName: ' Chauhan ',
                 email: ' kevin@gmail.com ',
-                password: '123',
+                password: '12345678',
                 role: Roles.CUSTOMER
             }
             await request(app).post('/auth/register').send(userData)
@@ -150,12 +150,25 @@ describe('POST /auth/register', () => {
             expect(users[0].lastName).toBe('Chauhan')
             expect(users[0].email).toBe('kevin@gmail.com')
         })
-        it('should return 400 status code 400 if emial is not a valid email', async () => {
+        it('should return 400 status code 400 if email is not a valid email', async () => {
             const userData = {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
                 email: 'kevingmailcom',
-                password: '123'
+                password: '12345678'
+            }
+            const response = await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(response.statusCode).toBe(400)
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 status code 400 if password length is less than 8 chars', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '1234'
             }
             const response = await request(app).post('/auth/register').send(userData)
             const userRepository = connection.getRepository(User)
