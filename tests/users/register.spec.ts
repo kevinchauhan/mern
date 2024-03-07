@@ -3,7 +3,7 @@ import request from "supertest"
 import { DataSource } from "typeorm"
 import { User } from "../../src/entity/User"
 import { AppDataSource } from "../../src/config/data-source"
-import { truncateTable } from "../utils"
+import { Roles } from "../../src/constants"
 
 describe('POST /auth/register', () => {
     let connection: DataSource
@@ -14,8 +14,9 @@ describe('POST /auth/register', () => {
     })
 
     beforeEach(async () => {
-        // truncate databse
-        await truncateTable(connection)
+        // drop and syncronize databse
+        await connection.dropDatabase()
+        await connection.synchronize()
     })
 
     afterAll(async () => {
@@ -62,7 +63,7 @@ describe('POST /auth/register', () => {
             expect(users[0].lastName).toEqual(userData.lastName)
             expect(users[0].email).toEqual(userData.email)
         })
-        it('should should return the id of created user', async () => {
+        it('should return the id of created user', async () => {
             const userData = {
                 firstName: 'Kevin',
                 lastName: 'Chauhan',
@@ -71,6 +72,19 @@ describe('POST /auth/register', () => {
             }
             const response = await request(app).post('/auth/register').send(userData)
             expect(response.body).toHaveProperty('id')
+        })
+        it('should assaign a customer role', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '123'
+            }
+            await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0]).toHaveProperty('role')
+            expect(users[0].role).toBe(Roles.CUSTOMER)
         })
     })
 
