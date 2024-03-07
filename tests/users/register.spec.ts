@@ -118,5 +118,20 @@ describe('POST /auth/register', () => {
     })
 
     // eslint-disable-next-line
-    describe('fields are missing', () => { })
+    describe('fields are missing', () => {
+        it('should return 400 status code if email field is missing', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: '',
+                password: '123',
+                role: Roles.CUSTOMER
+            }
+            const response = await request(app).post('/auth/register').send(userData)
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(response.statusCode).toBe(400)
+            expect(users).toHaveLength(0)
+        })
+    })
 })
