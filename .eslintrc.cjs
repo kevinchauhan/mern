@@ -7,8 +7,8 @@ module.exports = {
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        tsConfigRootDir: '_dirname',
-        project: ['./tsconfig.json'],
+        project: true,
+        tsconfigRootDir: __dirname,
     },
     plugins: ['@typescript-eslint'],
     root: true,
@@ -16,5 +16,6 @@ module.exports = {
         'no-console': 'error',
         '@typescript-eslint/no-unused-vars': 'warn',
         '@typescript-eslint/no-empty-function': 'warn',
+        '@typescript-eslint/no-unsafe-assignment': 'warn',
     },
 }

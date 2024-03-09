@@ -5,6 +5,7 @@ import { User } from "../../src/entity/User"
 import { AppDataSource } from "../../src/config/data-source"
 import { Roles } from "../../src/constants"
 import { isJwt } from "../utils"
+import { RefreshToken } from "../../src/entity/RefreshToken"
 
 describe('POST /auth/register', () => {
     let connection: DataSource
@@ -142,6 +143,21 @@ describe('POST /auth/register', () => {
             expect(refreshToken).not.toBeNull()
             expect(isJwt(accessToken)).toBeTruthy()
             expect(isJwt(refreshToken)).toBeTruthy()
+        })
+        it('should persist refresh token in db', async () => {
+            const userData = {
+                firstName: 'Kevin',
+                lastName: 'Chauhan',
+                email: 'kevin@gmail.com',
+                password: '12345678',
+                role: Roles.CUSTOMER
+            }
+            const response = await request(app).post('/auth/register').send(userData)
+            const refreshTokenRepository = connection.getRepository(RefreshToken)
+            const refreshTokens = await refreshTokenRepository.find()
+            const tokens = await refreshTokenRepository.createQueryBuilder('refreshToken').where('refreshToken.userId = :userId', { userId: (response.body as Record<string, string>).id }).getMany()
+            expect(refreshTokens).toHaveLength(1)
+            expect(tokens).toHaveLength(1)
         })
     })
 
