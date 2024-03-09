@@ -3,7 +3,7 @@ import { UserService } from "../services/UserService";
 import { Logger } from "winston";
 import { validationResult } from "express-validator";
 import { JwtPayload } from "jsonwebtoken";
-import { UserRequest } from '../types';
+import { AuthRequest, UserRequest } from '../types';
 import { TokenService } from '../services/TokenService';
 import createHttpError from "http-errors";
 import { CredentialService } from "../services/CredentialService";
@@ -126,5 +126,15 @@ export class AuthController {
         }
 
 
+    }
+
+    async self(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            const user = await this.userService.findById(Number(req.auth.sub))
+            res.json(user)
+        } catch (error) {
+            const err = createHttpError(500, 'Error while getting user')
+            return next(err)
+        }
     }
 }
