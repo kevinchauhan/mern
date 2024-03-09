@@ -131,7 +131,7 @@ export class AuthController {
     async self(req: AuthRequest, res: Response, next: NextFunction) {
         try {
             const user = await this.userService.findById(Number(req.auth.sub))
-            res.json(user)
+            res.json({ ...user, password: undefined })
         } catch (error) {
             const err = createHttpError(500, 'Error while getting user')
             return next(err)
