@@ -71,6 +71,10 @@ describe('GET /auth/self', () => {
             const response = await request(app).get('/auth/self').set('Cookie', [`accessToken=${accessToken};`]).send()
             expect(response.body).not.toHaveProperty('password')
         })
+        it('should return 401 status code if token does not exists', async () => {
+            const response = await request(app).get('/auth/self').send()
+            expect(response.statusCode).toBe(401)
+        })
     })
 
 
