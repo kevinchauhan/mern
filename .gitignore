@@ -135,3 +135,4 @@ dist
 # own/node_modules
 setup_checklist.md
 certs/
+public/
