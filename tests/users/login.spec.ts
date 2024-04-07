@@ -86,7 +86,7 @@ describe('POST /auth/login', () => {
             }
             await request(app).post('/auth/register').send(userData)
             const response = await request(app).post('/auth/login').send(loginData)
-            expect(response.statusCode).toBe(400)
+            expect(response.statusCode).toBe(401)
         })
         it('should not return accessToken and refreshToken if email or passwrod does not match', async () => {
             const userData = {

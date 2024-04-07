@@ -83,13 +83,13 @@ export class AuthController {
 
             const user = await this.userService.findByEmail(email)
             if (!user) {
-                const err = createHttpError(400, 'email or password does not match')
+                const err = createHttpError(401, 'Invalid credentials')
                 return next(err)
             }
 
             const isPasswordMatched = await this.credentialService.comparePassword(password, user.password)
             if (!isPasswordMatched) {
-                const err = createHttpError(400, 'email or password does not match')
+                const err = createHttpError(401, 'Invalid credentials')
                 return next(err)
             }
 
