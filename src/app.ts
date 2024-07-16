@@ -6,6 +6,7 @@ import { HttpError } from 'http-errors'
 import authRouter from './routes/auth'
 import cookieParser from "cookie-parser"
 import { CONFIG } from "./config"
+import tenantRouter from "./routes/tenant"
 
 const app = express()
 app.use(cors({
@@ -23,6 +24,8 @@ app.get('/', async (req, res) => {
 
 // Auth Route 
 app.use('/auth', authRouter)
+// Tenant Route
+app.use('/tenant', tenantRouter)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
