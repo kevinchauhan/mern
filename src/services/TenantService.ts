@@ -16,4 +16,44 @@ export class TenantService {
             throw err
         }
     }
+
+    async getAll() {
+        try {
+            const tenant = await this.tenantRepository.find()
+            return tenant
+        } catch (error) {
+            const err = createHttpError(500, 'Failed to fetch data from db')
+            throw err
+        }
+    }
+
+    async findById(id: number) {
+        try {
+            const tenant = await this.tenantRepository.findOne({ where: { id } })
+            return tenant
+        } catch (error) {
+            const err = createHttpError(500, 'Failed to fetch data from db')
+            throw err
+        }
+    }
+
+    async update(id: number, data: ITenantData) {
+        try {
+            const tenant = await this.tenantRepository.update(id, data)
+            return tenant
+        } catch (error) {
+            const err = createHttpError(500, 'Failed to update data in db')
+            throw err
+        }
+    }
+
+    async remove(id: number) {
+        try {
+            const tenant = await this.tenantRepository.delete(id)
+            return tenant
+        } catch (error) {
+            const err = createHttpError(500, 'Failed to update data in db')
+            throw err
+        }
+    }
 }

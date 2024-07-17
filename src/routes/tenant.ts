@@ -14,6 +14,10 @@ const userRepository = AppDataSource.getRepository(Tenants)
 const tenantService = new TenantService(userRepository)
 const tenantController = new TenantController(tenantService, logger)
 
-router.post('/', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.create(req, res, next))
+router.post('/create', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.create(req, res, next))
+router.get('/', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.getAll(req, res, next))
+router.get('/:id', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.getSingle(req, res, next))
+router.patch('/:id', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.update(req, res, next))
+router.delete('/:id', authenticate, canAccess([Roles.ADMIN]), (req, res, next) => tenantController.remove(req, res, next))
 
 export default router

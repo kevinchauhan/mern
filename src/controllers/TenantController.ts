@@ -22,4 +22,44 @@ export class TenantController {
             next(error)
         }
     }
+
+    async getAll(req: TenantRequest, res: Response, next: NextFunction) {
+        try {
+            const tenant = await this.tenantService.getAll()
+            res.status(200).json({ tenant })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getSingle(req: TenantRequest, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+            const tenant = await this.tenantService.findById(Number(id))
+            res.status(200).json({ tenant })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async update(req: TenantRequest, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+            const { name, address } = req.body
+            const tenant = await this.tenantService.update(Number(id), { name, address })
+            res.status(200).json({ tenant })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async remove(req: TenantRequest, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+            const tenant = await this.tenantService.remove(Number(id))
+            res.status(200).json({ tenant })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
