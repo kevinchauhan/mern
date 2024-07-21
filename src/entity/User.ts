@@ -23,5 +23,5 @@ export class User {
     role: string
 
     @ManyToOne(() => Tenants)
-    tenant: Tenants
+    tenant: Tenants | null
 }

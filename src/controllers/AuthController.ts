@@ -7,6 +7,7 @@ import { AuthRequest, UserRequest } from '../types';
 import { TokenService } from '../services/TokenService';
 import createHttpError from "http-errors";
 import { CredentialService } from "../services/CredentialService";
+import { Roles } from "../constants";
 
 export class AuthController {
 
@@ -30,7 +31,7 @@ export class AuthController {
 
         try {
             // persists user
-            const user = await this.userService.create({ firstName, lastName, email, password })
+            const user = await this.userService.create({ firstName, lastName, email, password, role: Roles.CUSTOMER })
 
             this.logger.info('User has been registered', { id: user.id })
 

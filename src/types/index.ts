@@ -1,10 +1,13 @@
 import { Request } from "express"
+import { Roles } from "../constants"
 
 export interface UserData {
     firstName: string
     lastName: string
     email: string
     password: string
+    role: Roles
+    tenantId?: number
 }
 
 export interface UserRequest extends Request {
@@ -35,4 +38,27 @@ export interface ITenantData {
 
 export interface TenantRequest extends Request {
     body: ITenantData
+}
+
+export interface CreateUserRequest extends Request {
+    body: UserData
+}
+
+export interface LimitedUserData {
+    firstName: string;
+    lastName: string;
+    role: string;
+    email: string;
+    tenantId: number;
+}
+
+export interface UpdateUserRequest extends Request {
+    body: LimitedUserData;
+}
+
+export interface UserQueryParams {
+    perPage: number;
+    currentPage: number;
+    q: string;
+    role: string;
 }
