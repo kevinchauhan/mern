@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { Tenants } from "../entity/Tenant";
-import { ITenantData } from "../types";
+import { ITenantData, TenantQueryParams } from "../types";
 import createHttpError from "http-errors";
 
 export class TenantService {
@@ -17,16 +17,24 @@ export class TenantService {
         }
     }
 
-    async getAll() {
-        try {
-            const tenant = await this.tenantRepository.find()
-            return tenant
-        } catch (error) {
-            const err = createHttpError(500, 'Failed to fetch data from db')
-            throw err
-        }
-    }
+    async getAll(validatedQuery: TenantQueryParams) {
+        const queryBuilder = this.tenantRepository.createQueryBuilder("tenant");
 
+        if (validatedQuery.q) {
+            const searchTerm = `%${validatedQuery.q}%`;
+            queryBuilder.where(
+                "CONCAT(tenant.name, ' ', tenant.address) ILike :q",
+                { q: searchTerm },
+            );
+        }
+
+        const result = await queryBuilder
+            .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
+            .take(validatedQuery.perPage)
+            .orderBy("tenant.id", "DESC")
+            .getManyAndCount();
+        return result;
+    }
     async findById(id: number) {
         try {
             const tenant = await this.tenantRepository.findOne({ where: { id } })
